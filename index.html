@@ -1,0 +1,2611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析技术实战训练营</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            color: #2C3E50;
+            background-color: #F5F7FA;
+            line-height: 1.6;
+        }
+        
+        /* 颜色变量 */
+        :root {
+            --primary-color: #335C81;
+            --secondary-color: #8FA6CB;
+            --light-gray: #F5F7FA;
+            --dark-gray: #2C3E50;
+            --extra-light-gray: #E8EEF2;
+        }
+        
+        /* 顶部导航栏 */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-left: 1rem;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin: 0 1rem;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .consult-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .consult-btn:hover {
+            background-color: #2A4A6E;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* 页面板块 */
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        /* 首页样式 */
+        .banner {
+            background-color: var(--extra-light-gray);
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+        }
+        
+        .banner h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .highlight-tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tag {
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .course定位 {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .定位-card {
+            flex: 1;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .定位-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .learning-path-overview {
+            margin-bottom: 3rem;
+        }
+        
+        .learning-path-overview h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .path-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .path-step {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .path-step::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+        
+        .path-step:last-child::after {
+            display: none;
+        }
+        
+        .course-advantages {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .advantage-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .advantage-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* 学习路径页样式 */
+        .path-section {
+            margin-bottom: 3rem;
+        }
+        
+        .path-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .path-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .path-content h4 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .path-content ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* 项目中心页样式 */
+        .projects-container {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .project-list {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .project-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--extra-light-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .project-item:hover {
+            background-color: var(--extra-light-gray);
+        }
+        
+        .project-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .project-details {
+            flex: 3;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .project-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--extra-light-gray);
+        }
+        
+        .project-header h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .project-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--extra-light-gray);
+        }
+        
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background-color: var(--extra-light-gray);
+        }
+        
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            padding: 2rem;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .code-block {
+            background-color: #f0f0f0;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            white-space: pre-wrap;
+            margin: 1rem 0;
+        }
+        
+        .test-question {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--extra-light-gray);
+        }
+        
+        .test-question:last-child {
+            border-bottom: none;
+        }
+        
+        .test-question h5 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .test-options {
+            margin: 1rem 0;
+        }
+        
+        .test-option {
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .test-option input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+        
+        .test-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .test-answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: var(--extra-light-gray);
+            border-radius: 4px;
+        }
+        
+        /* 学习资源页样式 */
+        .resource-category {
+            margin-bottom: 3rem;
+        }
+        
+        .resource-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .resource-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .resource-card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--extra-light-gray);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .resource-card-header h4 {
+            color: var(--primary-color);
+        }
+        
+        .resource-card-content {
+            padding: 1.5rem;
+            display: none;
+        }
+        
+        .resource-card-content.active {
+            display: block;
+        }
+        
+        /* 常见问题页样式 */
+        .faq-category {
+            margin-bottom: 3rem;
+        }
+        
+        .faq-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .faq-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background-color: var(--extra-light-gray);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+        }
+        
+        .faq-answer.active {
+            display: block;
+        }
+        
+        /* 底部页脚 */
+        .footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 咨询卡片 */
+        .consult-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            padding: 2rem;
+            width: 400px;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .consult-card.active {
+            display: block;
+        }
+        
+        .consult-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .consult-card p {
+            margin-bottom: 1rem;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1500;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .course-advantages {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .resource-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .nav-menu {
+                margin: 1rem 0;
+            }
+            
+            .course定位 {
+                flex-direction: column;
+            }
+            
+            .path-flow {
+                flex-direction: column;
+            }
+            
+            .path-step::after {
+                display: none;
+            }
+            
+            .projects-container {
+                flex-direction: column;
+            }
+            
+            .course-advantages {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <h1>数据分析技术实战训练营</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="active">首页</a></li>
+                <li><a href="#path">学习路径</a></li>
+                <li><a href="#projects">项目中心</a></li>
+                <li><a href="#resources">学习资源</a></li>
+                <li><a href="#faq">常见问题</a></li>
+            </ul>
+            <button class="consult-btn" onclick="showConsultCard()">咨询老师</button>
+        </div>
+    </nav>
+    
+    <!-- 主内容区域 -->
+    <div class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="section active">
+            <div class="banner">
+                <h2>从数据清洗到机器学习，10个实战项目带你掌握数据分析核心技能</h2>
+                <div class="highlight-tags">
+                    <span class="tag">零基础友好</span>
+                    <span class="tag">真实数据集</span>
+                    <span class="tag">练+复+测闭环</span>
+                </div>
+            </div>
+            
+            <div class="course定位">
+                <div class="定位-card">
+                    <h3>课程面向人群</h3>
+                    <p>零基础学生、职场入门者、数据分析爱好者</p>
+                </div>
+                <div class="定位-card">
+                    <h3>课程目标</h3>
+                    <p>掌握Python数据分析全流程、独立完成10个商业实战项目</p>
+                </div>
+            </div>
+            
+            <div class="learning-path-overview">
+                <h3>学习路径概览</h3>
+                <div class="path-flow">
+                    <div class="path-step">
+                        <h4>数据清洗</h4>
+                        <p>项目01、10</p>
+                    </div>
+                    <div class="path-step">
+                        <h4>数据分析</h4>
+                        <p>项目02、03、04、06</p>
+                    </div>
+                    <div class="path-step">
+                        <h4>数据可视化</h4>
+                        <p>项目05</p>
+                    </div>
+                    <div class="path-step">
+                        <h4>机器学习</h4>
+                        <p>项目07、08、09</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="course-advantages">
+                <div class="advantage-card">
+                    <h3>真实商业数据集</h3>
+                    <p>使用真实的商业数据集，让学习更贴近实际工作场景</p>
+                </div>
+                <div class="advantage-card">
+                    <h3>配套学习资料</h3>
+                    <p>提供完整的学习资料，包括数据集、代码模板和知识点文档</p>
+                </div>
+                <div class="advantage-card">
+                    <h3>100%实操驱动</h3>
+                    <p>通过10个实战项目，让你在实践中掌握数据分析技能</p>
+                </div>
+                <div class="advantage-card">
+                    <h3>永久可复用代码模板</h3>
+                    <p>提供可复用的代码模板，让你在工作中快速应用</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 学习路径页 -->
+        <section id="path" class="section">
+            <h2>循序渐进的数据分析学习路径</h2>
+            
+            <div class="path-section">
+                <h3>1. 数据清洗阶段</h3>
+                <div class="path-content">
+                    <h4>对应项目：项目01、10</h4>
+                    <h4>学习目标：掌握数据预处理全流程</h4>
+                    <h4>核心技能点：</h4>
+                    <ul>
+                        <li>缺失值/异常值处理</li>
+                        <li>时间格式化</li>
+                        <li>多源数据合并</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="path-section">
+                <h3>2. 数据分析阶段</h3>
+                <div class="path-content">
+                    <h4>对应项目：项目02、03、04、06</h4>
+                    <h4>学习目标：掌握商业数据分析核心方法</h4>
+                    <h4>核心技能点：</h4>
+                    <ul>
+                        <li>分组聚合</li>
+                        <li>关联规则</li>
+                        <li>客户聚类</li>
+                        <li>A/B测试</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="path-section">
+                <h3>3. 数据可视化阶段</h3>
+                <div class="path-content">
+                    <h4>对应项目：项目05</h4>
+                    <h4>学习目标：掌握专业数据可视化方法</h4>
+                    <h4>核心技能点：</h4>
+                    <ul>
+                        <li>matplotlib绘图</li>
+                        <li>趋势图/分布图制作</li>
+                        <li>可视化解读</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="path-section">
+                <h3>4. 机器学习入门阶段</h3>
+                <div class="path-content">
+                    <h4>对应项目：项目07、08、09</h4>
+                    <h4>学习目标：掌握机器学习基础应用</h4>
+                    <h4>核心技能点：</h4>
+                    <ul>
+                        <li>时间序列预测</li>
+                        <li>特征工程</li>
+                        <li>异常值检测</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 项目中心页 -->
+        <section id="projects" class="section">
+            <h2>项目中心</h2>
+            <div class="projects-container">
+                <div class="project-list">
+                    <div class="project-item active" onclick="switchProject(0)">项目01：数据清洗基础</div>
+                    <div class="project-item" onclick="switchProject(1)">项目02：销售数据分组聚合</div>
+                    <div class="project-item" onclick="switchProject(2)">项目03：购物篮分析</div>
+                    <div class="project-item" onclick="switchProject(3)">项目04：客户聚类分析</div>
+                    <div class="project-item" onclick="switchProject(4)">项目05：销售数据可视化</div>
+                    <div class="project-item" onclick="switchProject(5)">项目06：A/B测试分析</div>
+                    <div class="project-item" onclick="switchProject(6)">项目07：时间序列分析</div>
+                    <div class="project-item" onclick="switchProject(7)">项目08：特征工程</div>
+                    <div class="project-item" onclick="switchProject(8)">项目09：异常值检测</div>
+                    <div class="project-item" onclick="switchProject(9)">项目10：多数据集合并</div>
+                </div>
+                
+                <div class="project-details">
+                    <div class="project-header">
+                        <h3 id="project-title">项目01：数据清洗基础</h3>
+                        <p id="project-task">核心任务：处理缺失值、异常值，格式化时间列，计算总价</p>
+                        <p id="project-data">使用数据：retail_orders.csv</p>
+                    </div>
+                    
+                    <div class="project-tabs">
+                        <div class="tab active" onclick="switchTab('practice')">练习</div>
+                        <div class="tab" onclick="switchTab('review')">复习</div>
+                        <div class="tab" onclick="switchTab('test')">测试</div>
+                    </div>
+                    
+                    <div id="practice" class="tab-content active">
+                        <h4>实操任务说明</h4>
+                        <p>1. 加载并查看数据集基本信息</p>
+                        <p>2. 处理缺失值和异常值</p>
+                        <p>3. 格式化时间列</p>
+                        <p>4. 计算总价列</p>
+                        
+                        <h4>代码模板</h4>
+                        <div class="code-block">
+import pandas as pd
+
+# 加载数据
+df = pd.read_csv('retail_orders.csv')
+
+# 查看基本信息
+print(df.info())
+print(df.head())
+
+# 处理缺失值
+df = df.dropna()
+
+# 处理异常值
+df = df[df['quantity'] > 0]
+df = df[df['unit_price'] > 0]
+
+# 格式化时间列
+df['order_date'] = pd.to_datetime(df['order_date'])
+
+# 计算总价
+df['total_price'] = df['quantity'] * df['unit_price']
+
+# 保存处理后的数据
+df.to_csv('cleaned_orders.csv', index=False)
+print('数据清洗完成！')
+                        </div>
+                    </div>
+                    
+                    <div id="review" class="tab-content">
+                        <h4>知识点梳理</h4>
+                        <ul>
+                            <li>数据加载与基本信息查看</li>
+                            <li>缺失值处理方法</li>
+                            <li>异常值检测与处理</li>
+                            <li>时间序列数据处理</li>
+                            <li>派生列计算</li>
+                        </ul>
+                        
+                        <h4>易错点总结</h4>
+                        <ul>
+                            <li>处理缺失值时注意保留有效数据</li>
+                            <li>异常值检测需要结合业务逻辑</li>
+                            <li>时间格式化时注意时区问题</li>
+                            <li>计算总价时注意数据类型转换</li>
+                        </ul>
+                    </div>
+                    
+                    <div id="test" class="tab-content">
+                        <div class="test-question">
+                            <h5>1. 以下哪种方法可以处理缺失值？</h5>
+                            <div class="test-options">
+                                <div class="test-option">A. dropna()</div>
+                                <div class="test-option">B. fillna()</div>
+                                <div class="test-option">C. both A and B</div>
+                                <div class="test-option">D. none of the above</div>
+                            </div>
+                            <div class="test-answer">
+                                <strong>答案：C</strong><br>
+                                解析：dropna()用于删除包含缺失值的行，fillna()用于填充缺失值，两者都可以处理缺失值。
+                            </div>
+                        </div>
+                        
+                        <div class="test-question">
+                            <h5>2. 时间序列数据格式化使用的函数是？</h5>
+                            <div class="test-options">
+                                <div class="test-option">A. to_datetime()</div>
+                                <div class="test-option">B. format_date()</div>
+                                <div class="test-option">C. parse_date()</div>
+                                <div class="test-option">D. date_format()</div>
+                            </div>
+                            <div class="test-answer">
+                                <strong>答案：A</strong><br>
+                                解析：pandas中的to_datetime()函数用于将字符串转换为 datetime类型。
+                            </div>
+                        </div>
+                        
+                        <div class="test-question">
+                            <h5>3. 计算总价的公式是？</h5>
+                            <div class="test-options">
+                                <div class="test-option">A. 数量 + 单价</div>
+                                <div class="test-option">B. 数量 - 单价</div>
+                                <div class="test-option">C. 数量 * 单价</div>
+                                <div class="test-option">D. 数量 / 单价</div>
+                            </div>
+                            <div class="test-answer">
+                                <strong>答案：C</strong><br>
+                                解析：总价 = 数量 * 单价。
+                            </div>
+                        </div>
+                        
+                        <div class="test-question">
+                            <h5>4. 异常值检测可以使用哪些方法？</h5>
+                            <div class="test-options">
+                                <div class="test-option">A. 箱线图</div>
+                                <div class="test-option">B. 3σ原则</div>
+                                <div class="test-option">C. IQR方法</div>
+                                <div class="test-option">D. all of the above</div>
+                            </div>
+                            <div class="test-answer">
+                                <strong>答案：D</strong><br>
+                                解析：箱线图、3σ原则和IQR方法都可以用于异常值检测。
+                            </div>
+                        </div>
+                        
+                        <div class="test-question">
+                            <h5>5. 保存处理后的数据使用的函数是？</h5>
+                            <div class="test-options">
+                                <div class="test-option">A. save()</div>
+                                <div class="test-option">B. to_csv()</div>
+                                <div class="test-option">C. export()</div>
+                                <div class="test-option">D. write()</div>
+                            </div>
+                            <div class="test-answer">
+                                <strong>答案：B</strong><br>
+                                解析：pandas中的to_csv()函数用于将数据保存为CSV文件。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 学习资源页 -->
+        <section id="resources" class="section">
+            <h2>学习资源</h2>
+            
+            <div class="resource-category">
+                <h3>数据集资源</h3>
+                <div class="resource-cards">
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>retail_orders.csv</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>字段含义：</strong></p>
+                            <ul>
+                                <li>order_id: 订单ID</li>
+                                <li>product_id: 产品ID</li>
+                                <li>quantity: 数量</li>
+                                <li>unit_price: 单价</li>
+                                <li>order_date: 订单日期</li>
+                                <li>customer_id: 客户ID</li>
+                                <li>region: 地区</li>
+                            </ul>
+                            <p><strong>应用场景：</strong>销售数据分析、时间序列分析、地区销售对比</p>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>market_basket.csv</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>字段含义：</strong></p>
+                            <ul>
+                                <li>transaction_id: 交易ID</li>
+                                <li>product_name: 产品名称</li>
+                                <li>quantity: 数量</li>
+                                <li>price: 价格</li>
+                            </ul>
+                            <p><strong>应用场景：</strong>购物篮分析、关联规则挖掘、产品组合分析</p>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>user_logs.csv</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>字段含义：</strong></p>
+                            <ul>
+                                <li>user_id: 用户ID</li>
+                                <li>login_time: 登录时间</li>
+                                <li>duration: 停留时长</li>
+                                <li>pages_visited: 访问页面数</li>
+                                <li>purchase: 是否购买</li>
+                            </ul>
+                            <p><strong>应用场景：</strong>用户行为分析、客户聚类、购买预测</p>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>ab_test.csv</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>字段含义：</strong></p>
+                            <ul>
+                                <li>user_id: 用户ID</li>
+                                <li>group: 实验组/对照组</li>
+                                <li>conversion: 转化率</li>
+                                <li>revenue: 收入</li>
+                            </ul>
+                            <p><strong>应用场景：</strong>A/B测试分析、显著性检验、效果评估</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resource-category">
+                <h3>代码模板资源</h3>
+                <div class="resource-cards">
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>数据清洗模板</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <div class="code-block">
+# 数据清洗模板
+import pandas as pd
+
+# 加载数据
+df = pd.read_csv('data.csv')
+
+# 查看基本信息
+print(df.info())
+print(df.describe())
+
+# 处理缺失值
+df = df.dropna()  # 或 df.fillna(value)
+
+# 处理异常值
+df = df[(df['column'] > min_value) & (df['column'] < max_value)]
+
+# 格式化时间列
+df['date_column'] = pd.to_datetime(df['date_column'])
+
+# 保存清洗后的数据
+df.to_csv('cleaned_data.csv', index=False)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>分组聚合模板</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <div class="code-block">
+# 分组聚合模板
+import pandas as pd
+
+# 加载数据
+df = pd.read_csv('data.csv')
+
+# 按单个字段分组
+result = df.groupby('category').agg({
+    'value': ['sum', 'mean', 'count']
+}).reset_index()
+
+# 按多个字段分组
+result = df.groupby(['category', 'region']).agg({
+    'value': 'sum',
+    'quantity': 'mean'
+}).reset_index()
+
+# 保存结果
+result.to_csv('aggregated_data.csv', index=False)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>可视化模板</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <div class="code-block">
+# 可视化模板
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 加载数据
+df = pd.read_csv('data.csv')
+
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+# 趋势图
+plt.figure(figsize=(12, 6))
+plt.plot(df['date'], df['value'])
+plt.title('趋势图')
+plt.xlabel('日期')
+plt.ylabel('值')
+plt.grid(True)
+plt.show()
+
+# 分布图
+plt.figure(figsize=(10, 6))
+plt.hist(df['value'], bins=20)
+plt.title('分布图')
+plt.xlabel('值')
+plt.ylabel('频率')
+plt.grid(True)
+plt.show()
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>聚类/预测模板</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <div class="code-block">
+# 聚类模板
+from sklearn.cluster import KMeans
+import pandas as pd
+
+# 加载数据
+df = pd.read_csv('data.csv')
+
+# 特征选择
+features = df[['feature1', 'feature2', 'feature3']]
+
+# K-means聚类
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(features)
+
+# 保存结果
+df.to_csv('clustered_data.csv', index=False)
+
+# 时间序列预测模板
+from statsmodels.tsa.arima.model import ARIMA
+import pandas as pd
+
+# 加载数据
+df = pd.read_csv('time_series_data.csv')
+df['date'] = pd.to_datetime(df['date'])
+df.set_index('date', inplace=True)
+
+# 拟合模型
+model = ARIMA(df['value'], order=(1, 1, 1))
+model_fit = model.fit()
+
+# 预测
+forecast = model_fit.forecast(steps=30)
+print(forecast)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resource-category">
+                <h3>知识点文档</h3>
+                <div class="resource-cards">
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>数据清洗手册</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <h4>数据清洗流程</h4>
+                            <ol>
+                                <li>数据收集与加载</li>
+                                <li>数据质量评估</li>
+                                <li>缺失值处理</li>
+                                <li>异常值检测与处理</li>
+                                <li>数据类型转换</li>
+                                <li>数据标准化/归一化</li>
+                                <li>数据验证与保存</li>
+                            </ol>
+                            <h4>常用函数</h4>
+                            <ul>
+                                <li>pd.read_csv() - 加载CSV数据</li>
+                                <li>df.info() - 查看数据信息</li>
+                                <li>df.dropna() - 删除缺失值</li>
+                                <li>df.fillna() - 填充缺失值</li>
+                                <li>pd.to_datetime() - 时间格式化</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>数据分析手册</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <h4>数据分析方法</h4>
+                            <ul>
+                                <li>描述性统计分析</li>
+                                <li>分组聚合分析</li>
+                                <li>关联分析</li>
+                                <li>时间序列分析</li>
+                                <li>A/B测试分析</li>
+                            </ul>
+                            <h4>常用函数</h4>
+                            <ul>
+                                <li>df.describe() - 描述性统计</li>
+                                <li>df.groupby() - 分组</li>
+                                <li>df.agg() - 聚合</li>
+                                <li>df.merge() - 数据合并</li>
+                                <li>df.pivot_table() - 透视表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>可视化手册</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <h4>常用图表类型</h4>
+                            <ul>
+                                <li>折线图 - 展示趋势</li>
+                                <li>柱状图 - 比较数据</li>
+                                <li>饼图 - 展示占比</li>
+                                <li>散点图 - 展示相关性</li>
+                                <li>箱线图 - 展示分布</li>
+                            </ul>
+                            <h4>matplotlib基础</h4>
+                            <ul>
+                                <li>plt.figure() - 创建画布</li>
+                                <li>plt.plot() - 绘制折线图</li>
+                                <li>plt.bar() - 绘制柱状图</li>
+                                <li>plt.pie() - 绘制饼图</li>
+                                <li>plt.scatter() - 绘制散点图</li>
+                                <li>plt.title() - 添加标题</li>
+                                <li>plt.xlabel() - 添加x轴标签</li>
+                                <li>plt.ylabel() - 添加y轴标签</li>
+                                <li>plt.show() - 显示图表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>机器学习入门手册</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <h4>机器学习基础</h4>
+                            <ul>
+                                <li>监督学习 vs 无监督学习</li>
+                                <li>特征工程</li>
+                                <li>模型训练与评估</li>
+                                <li>过拟合与欠拟合</li>
+                            </ul>
+                            <h4>常用算法</h4>
+                            <ul>
+                                <li>K-means聚类</li>
+                                <li>线性回归</li>
+                                <li>逻辑回归</li>
+                                <li>决策树</li>
+                                <li>随机森林</li>
+                            </ul>
+                            <h4>scikit-learn基础</h4>
+                            <ul>
+                                <li>from sklearn.model_selection import train_test_split - 数据分割</li>
+                                <li>from sklearn.preprocessing import StandardScaler - 数据标准化</li>
+                                <li>from sklearn.cluster import KMeans - K-means聚类</li>
+                                <li>from sklearn.linear_model import LinearRegression - 线性回归</li>
+                                <li>from sklearn.metrics import accuracy_score - 评估指标</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="resource-category">
+                <h3>工具推荐</h3>
+                <div class="resource-cards">
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>Python</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>安装教程：</strong></p>
+                            <ol>
+                                <li>访问Python官网：https://www.python.org/</li>
+                                <li>下载对应版本的安装包</li>
+                                <li>运行安装程序，勾选"Add Python to PATH"</li>
+                                <li>完成安装后，在命令行输入<code>python --version</code>验证</li>
+                            </ol>
+                            <p><strong>常用库：</strong></p>
+                            <ul>
+                                <li>pandas - 数据处理</li>
+                                <li>numpy - 数值计算</li>
+                                <li>matplotlib - 数据可视化</li>
+                                <li>scikit-learn - 机器学习</li>
+                                <li>jupyter - 交互式编程</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>VS Code</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>安装教程：</strong></p>
+                            <ol>
+                                <li>访问VS Code官网：https://code.visualstudio.com/</li>
+                                <li>下载对应系统的安装包</li>
+                                <li>运行安装程序完成安装</li>
+                                <li>安装Python扩展：在扩展面板中搜索"Python"并安装</li>
+                            </ol>
+                            <p><strong>推荐插件：</strong></p>
+                            <ul>
+                                <li>Python - 提供Python语言支持</li>
+                                <li>Jupyter - 支持Jupyter笔记本</li>
+                                <li>Code Runner - 快速运行代码</li>
+                                <li>GitLens - Git集成</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resource-card">
+                        <div class="resource-card-header" onclick="toggleResource(this)">
+                            <h4>Jupyter Notebook</h4>
+                            <span>▼</span>
+                        </div>
+                        <div class="resource-card-content">
+                            <p><strong>安装教程：</strong></p>
+                            <ol>
+                                <li>使用pip安装：<code>pip install jupyter</code></li>
+                                <li>启动Jupyter：<code>jupyter notebook</code></li>
+                                <li>在浏览器中打开生成的URL</li>
+                            </ol>
+                            <p><strong>使用技巧：</strong></p>
+                            <ul>
+                                <li>使用<code>Shift+Enter</code>运行单元格</li>
+                                <li>使用<code>Ctrl+Enter</code>运行当前单元格</li>
+                                <li>使用<code>Alt+Enter</code>运行并在下方插入新单元格</li>
+                                <li>使用Markdown单元格添加说明文字</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 常见问题页 -->
+        <section id="faq" class="section">
+            <h2>常见问题</h2>
+            
+            <div class="faq-category">
+                <h3>入门问题</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>零基础可以学吗？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>可以。本课程专门为零基础学生设计，从基础概念开始，循序渐进地讲解数据分析的各个环节。课程提供了详细的代码模板和练习题，帮助你逐步掌握数据分析技能。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>需要什么基础？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>不需要编程基础，但具备基本的计算机操作能力会更好。课程会从Python基础开始讲解，逐步过渡到数据分析的核心技能。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>课程需要用到哪些软件？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>课程需要用到以下软件：</p>
+                        <ul>
+                            <li>Python 3.7+</li>
+                            <li>VS Code 或其他代码编辑器</li>
+                            <li>Jupyter Notebook</li>
+                            <li>pandas、numpy、matplotlib、scikit-learn等Python库</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-category">
+                <h3>学习问题</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>课程进度跟不上怎么办？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>课程内容可以反复观看和练习，建议按照自己的节奏学习。如果遇到困难，可以参考学习资源中的知识点文档，或者咨询老师获取帮助。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>代码运行报错怎么解决？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>代码报错是学习过程中的正常现象，建议：</p>
+                        <ul>
+                            <li>仔细查看错误信息，理解错误原因</li>
+                            <li>检查代码拼写和语法</li>
+                            <li>参考代码模板中的正确写法</li>
+                            <li>如果仍然无法解决，可以咨询老师</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-category">
+                <h3>项目问题</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>项目数据集怎么获取？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>课程提供了所有项目所需的数据集，你可以在学习资源页面找到数据集的详细说明和下载链接。</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>项目代码可以复用吗？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>是的，课程提供的代码模板可以在实际工作中复用。你可以根据具体的业务场景进行适当的修改和调整。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-category">
+                <h3>后续问题</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>学完可以做什么？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>学完本课程后，你可以：</p>
+                        <ul>
+                            <li>在简历中添加数据分析技能</li>
+                            <li>申请数据分析相关的工作</li>
+                            <li>在现有工作中应用数据分析技能</li>
+                            <li>继续深入学习更高级的数据分析技术</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>有没有进阶学习路径推荐？</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>进阶学习路径推荐：</p>
+                        <ul>
+                            <li>深入学习机器学习算法</li>
+                            <li>学习深度学习在数据分析中的应用</li>
+                            <li>掌握大数据处理技术（如Hadoop、Spark）</li>
+                            <li>学习数据可视化工具（如Tableau、Power BI）</li>
+                            <li>参与 Kaggle 等数据科学竞赛</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- 底部页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2026 数据分析技术实战训练营 教学版</p>
+            <p>咨询邮箱：contact@data-camp.com</p>
+            <p>教学答疑入口：<a href="#" style="color: white; text-decoration: underline;">点击进入</a></p>
+        </div>
+    </footer>
+    
+    <!-- 咨询卡片 -->
+    <div class="overlay" onclick="hideConsultCard()"></div>
+    <div class="consult-card">
+        <button class="close-btn" onclick="hideConsultCard()">&times;</button>
+        <h3>咨询老师</h3>
+        <p><strong>老师姓名：</strong>张老师</p>
+        <p><strong>联系方式：</strong>13800138000</p>
+        <p><strong>邮箱：</strong>teacher@data-camp.com</p>
+        <p><strong>咨询时间：</strong>周一至周五 9:00-18:00</p>
+        <p><strong>咨询内容：</strong></p>
+        <ul>
+            <li>课程内容咨询</li>
+            <li>学习问题解答</li>
+            <li>项目实践指导</li>
+        </ul>
+    </div>
+    
+    <script>
+        // 项目数据
+        const projects = [
+            {
+                title: "项目01：数据清洗基础",
+                task: "核心任务：处理缺失值、异常值，格式化时间列，计算总价",
+                data: "使用数据：retail_orders.csv",
+                practice: {
+                    tasks: ["1. 加载并查看数据集基本信息", "2. 处理缺失值和异常值", "3. 格式化时间列", "4. 计算总价列"],
+                    code: `import pandas as pd
+
+# 加载数据
+df = pd.read_csv('retail_orders.csv')
+
+# 查看基本信息
+print(df.info())
+print(df.head())
+
+# 处理缺失值
+df = df.dropna()
+
+# 处理异常值
+df = df[df['quantity'] > 0]
+df = df[df['unit_price'] > 0]
+
+# 格式化时间列
+df['order_date'] = pd.to_datetime(df['order_date'])
+
+# 计算总价
+df['total_price'] = df['quantity'] * df['unit_price']
+
+# 保存处理后的数据
+df.to_csv('cleaned_orders.csv', index=False)
+print('数据清洗完成！')`
+                },
+                review: {
+                    knowledge: ["数据加载与基本信息查看", "缺失值处理方法", "异常值检测与处理", "时间序列数据处理", "派生列计算"],
+                   易错点: ["处理缺失值时注意保留有效数据", "异常值检测需要结合业务逻辑", "时间格式化时注意时区问题", "计算总价时注意数据类型转换"]
+                }
+            },
+            {
+                title: "项目02：销售数据分组聚合",
+                task: "核心任务：按产品、地区、时间分组计算统计指标",
+                data: "使用数据：retail_orders.csv",
+                practice: {
+                    tasks: ["1. 按产品分组计算销售总额", "2. 按地区分组计算销售数量", "3. 按时间分组分析销售趋势", "4. 创建透视表分析多维度数据"],
+                    code: `import pandas as pd
+
+# 加载数据
+df = pd.read_csv('retail_orders.csv')
+
+# 按产品分组计算销售总额
+product_sales = df.groupby('product_id').agg({
+    'quantity': 'sum',
+    'unit_price': 'mean',
+    'total_price': 'sum'
+}).reset_index()
+print('按产品分组:')
+print(product_sales)
+
+# 按地区分组计算销售数量
+region_sales = df.groupby('region').agg({
+    'quantity': 'sum',
+    'total_price': 'sum'
+}).reset_index()
+print('\n按地区分组:')
+print(region_sales)
+
+# 按时间分组分析销售趋势
+df['order_date'] = pd.to_datetime(df['order_date'])
+df['month'] = df['order_date'].dt.month
+time_sales = df.groupby('month').agg({
+    'total_price': 'sum'
+}).reset_index()
+print('\n按月份分组:')
+print(time_sales)
+
+# 创建透视表
+pivot_table = pd.pivot_table(df, values='total_price', 
+                            index='region', 
+                            columns='month', 
+                            aggfunc='sum')
+print('\n透视表:')
+print(pivot_table)`
+                },
+                review: {
+                    knowledge: ["分组聚合的基本概念", "groupby()函数的使用", "agg()函数的参数设置", "多维度分组方法", "透视表的创建与应用"],
+                   易错点: ["分组键的数据类型要正确", "聚合函数的选择要符合业务需求", "处理缺失值对聚合结果的影响", "多维度分组时的层级索引处理"]
+                }
+            },
+            {
+                title: "项目03：购物篮分析",
+                task: "核心任务：分析商品关联规则，识别热销组合",
+                data: "使用数据：market_basket.csv",
+                practice: {
+                    tasks: ["1. 加载并预处理购物篮数据", "2. 生成商品交易矩阵", "3. 计算商品支持度和置信度", "4. 识别热销商品组合"],
+                    code: `import pandas as pd
+from mlxtend.frequent_patterns import apriori
+from mlxtend.frequent_patterns import association_rules
+
+# 加载数据
+df = pd.read_csv('market_basket.csv')
+
+# 预处理数据
+# 假设数据格式为 transaction_id, product_name
+basket = df.groupby('transaction_id')['product_name'].apply(list)
+
+# 生成交易矩阵
+from mlxtend.preprocessing import TransactionEncoder
+tr_encoder = TransactionEncoder()
+tr_array = tr_encoder.fit_transform(basket)
+tr_df = pd.DataFrame(tr_array, columns=tr_encoder.columns_)
+
+# 计算频繁项集
+frequent_itemsets = apriori(tr_df, min_support=0.01, use_colnames=True)
+print('频繁项集:')
+print(frequent_itemsets)
+
+# 生成关联规则
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.1)
+print('\n关联规则:')
+print(rules[['antecedents', 'consequents', 'support', 'confidence', 'lift']])`
+                },
+                review: {
+                    knowledge: ["购物篮分析的基本概念", "Apriori算法原理", "支持度、置信度、提升度的计算", "频繁项集的生成", "关联规则的解读"],
+                   易错点: ["数据预处理的正确性", "支持度和置信度阈值的选择", "处理大型数据集时的性能问题", "关联规则的实际业务价值评估"]
+                }
+            },
+            {
+                title: "项目04：客户聚类分析",
+                task: "核心任务：K-means聚类划分客户群体",
+                data: "使用数据：user_logs.csv",
+                practice: {
+                    tasks: ["1. 加载并预处理用户数据", "2. 选择合适的特征进行聚类", "3. 使用K-means算法进行聚类", "4. 分析不同客户群体的特征"],
+                    code: `import pandas as pd
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# 加载数据
+df = pd.read_csv('user_logs.csv')
+
+# 预处理数据
+df['login_time'] = pd.to_datetime(df['login_time'])
+df['login_hour'] = df['login_time'].dt.hour
+
+# 选择特征
+features = df[['duration', 'pages_visited', 'purchase']]
+
+# 使用肘部法则确定最佳k值
+inertia = []
+for k in range(1, 11):
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(features)
+    inertia.append(kmeans.inertia_)
+
+# 绘制肘部图
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, 11), inertia, marker='o')
+plt.title('肘部法则')
+plt.xlabel('聚类数量')
+plt.ylabel('惯性')
+plt.show()
+
+# 使用最佳k值进行聚类
+kmeans = KMeans(n_clusters=3, random_state=42)
+df['cluster'] = kmeans.fit_predict(features)
+
+# 分析每个聚类的特征
+cluster_analysis = df.groupby('cluster').agg({
+    'duration': 'mean',
+    'pages_visited': 'mean',
+    'purchase': 'mean'
+}).reset_index()
+print('聚类分析:')
+print(cluster_analysis)`
+                },
+                review: {
+                    knowledge: ["聚类分析的基本概念", "K-means算法原理", "特征选择与预处理", "肘部法则确定k值", "聚类结果的分析与应用"],
+                   易错点: ["特征的选择要符合业务需求", "数据标准化的重要性", "k值的合理选择", "聚类结果的业务解读"]
+                }
+            },
+            {
+                title: "项目05：销售数据可视化",
+                task: "核心任务：matplotlib绘制趋势图、分布图",
+                data: "使用数据：retail_orders.csv",
+                practice: {
+                    tasks: ["1. 加载并预处理销售数据", "2. 绘制销售趋势图", "3. 绘制销售分布图", "4. 绘制地区销售对比图"],
+                    code: `import pandas as pd
+import matplotlib.pyplot as plt
+
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+# 加载数据
+df = pd.read_csv('retail_orders.csv')
+df['order_date'] = pd.to_datetime(df['order_date'])
+df['month'] = df['order_date'].dt.month
+
+# 计算月度销售总额
+monthly_sales = df.groupby('month')['total_price'].sum().reset_index()
+
+# 绘制销售趋势图
+plt.figure(figsize=(12, 6))
+plt.plot(monthly_sales['month'], monthly_sales['total_price'], marker='o', linestyle='-')
+plt.title('月度销售趋势')
+plt.xlabel('月份')
+plt.ylabel('销售总额')
+plt.grid(True)
+plt.show()
+
+# 绘制销售分布图
+plt.figure(figsize=(10, 6))
+plt.hist(df['total_price'], bins=50, alpha=0.7, color='blue')
+plt.title('销售金额分布')
+plt.xlabel('销售金额')
+plt.ylabel('频率')
+plt.grid(True)
+plt.show()
+
+# 计算地区销售总额
+region_sales = df.groupby('region')['total_price'].sum().reset_index()
+
+# 绘制地区销售对比图
+plt.figure(figsize=(10, 6))
+plt.bar(region_sales['region'], region_sales['total_price'])
+plt.title('地区销售对比')
+plt.xlabel('地区')
+plt.ylabel('销售总额')
+plt.xticks(rotation=45)
+plt.grid(True, axis='y')
+plt.show()`
+                },
+                review: {
+                    knowledge: ["matplotlib的基本使用", "数据可视化的原则", "不同图表类型的适用场景", "图表样式的美化", "中文字体的设置"],
+                   易错点: ["数据预处理的正确性", "图表标题和标签的清晰度", "颜色和样式的选择", "图表尺寸的合理设置", "数据量较大时的处理"]
+                }
+            },
+            {
+                title: "项目06：A/B测试分析",
+                task: "核心任务：分析方案差异，显著性检验",
+                data: "使用数据：ab_test.csv",
+                practice: {
+                    tasks: ["1. 加载并查看A/B测试数据", "2. 计算两组的基本统计量", "3. 进行显著性检验", "4. 分析测试结果"],
+                    code: `import pandas as pd
+from scipy import stats
+
+# 加载数据
+df = pd.read_csv('ab_test.csv')
+
+# 查看数据基本信息
+print(df.info())
+print(df.head())
+
+# 分离实验组和对照组
+group_a = df[df['group'] == 'A']['conversion']
+group_b = df[df['group'] == 'B']['conversion']
+
+# 计算基本统计量
+print('\n实验组统计量:')
+print(f'样本量: {len(group_a)}')
+print(f'平均值: {group_a.mean():.4f}')
+print(f'标准差: {group_a.std():.4f}')
+
+print('\n对照组统计量:')
+print(f'样本量: {len(group_b)}')
+print(f'平均值: {group_b.mean():.4f}')
+print(f'标准差: {group_b.std():.4f}')
+
+# 进行t检验
+t_stat, p_value = stats.ttest_ind(group_a, group_b)
+print('\nt检验结果:')
+print(f't统计量: {t_stat:.4f}')
+print(f'p值: {p_value:.4f}')
+
+# 分析结果
+if p_value < 0.05:
+    print('\n结论: 两组之间存在显著差异')
+    if group_a.mean() > group_b.mean():
+        print('实验组表现优于对照组')
+    else:
+        print('对照组表现优于实验组')
+else:
+    print('\n结论: 两组之间不存在显著差异')`
+                },
+                review: {
+                    knowledge: ["A/B测试的基本概念", "假设检验的原理", "t检验的适用条件", "p值的解读", "测试结果的业务分析"],
+                   易错点: ["样本量的合理性", "数据收集的准确性", "统计方法的正确选择", "p值的正确解读", "结果的业务价值评估"]
+                }
+            },
+            {
+                title: "项目07：时间序列分析",
+                task: "核心任务：分析销售趋势，简单预测",
+                data: "使用数据：retail_orders.csv",
+                practice: {
+                    tasks: ["1. 加载并预处理时间序列数据", "2. 分析销售趋势", "3. 识别季节性模式", "4. 使用ARIMA模型进行预测"],
+                    code: `import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.tsa.arima.model import ARIMA
+
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+# 加载数据
+df = pd.read_csv('retail_orders.csv')
+df['order_date'] = pd.to_datetime(df['order_date'])
+
+# 按日期聚合
+daily_sales = df.groupby('order_date')['total_price'].sum().reset_index()
+daily_sales.set_index('order_date', inplace=True)
+
+# 绘制销售趋势
+plt.figure(figsize=(12, 6))
+plt.plot(daily_sales.index, daily_sales['total_price'])
+plt.title('销售趋势')
+plt.xlabel('日期')
+plt.ylabel('销售总额')
+plt.grid(True)
+plt.show()
+
+# 拟合ARIMA模型
+model = ARIMA(daily_sales['total_price'], order=(1, 1, 1))
+model_fit = model.fit()
+
+# 预测未来7天
+forecast = model_fit.forecast(steps=7)
+print('未来7天销售预测:')
+print(forecast)
+
+# 绘制预测结果
+plt.figure(figsize=(12, 6))
+plt.plot(daily_sales.index, daily_sales['total_price'], label='历史数据')
+plt.plot(pd.date_range(start=daily_sales.index[-1], periods=8, freq='D')[1:], forecast, label='预测数据', color='red')
+plt.title('销售预测')
+plt.xlabel('日期')
+plt.ylabel('销售总额')
+plt.legend()
+plt.grid(True)
+plt.show()`
+                },
+                review: {
+                    knowledge: ["时间序列分析的基本概念", "趋势和季节性的识别", "ARIMA模型的原理", "模型参数的选择", "预测结果的解读"],
+                   易错点: ["时间索引的正确设置", "数据平稳性的判断", "模型参数的调优", "预测结果的合理区间", "异常值对模型的影响"]
+                }
+            },
+            {
+                title: "项目08：特征工程",
+                task: "核心任务：创建新特征，优化数据结构",
+                data: "使用数据：user_logs.csv",
+                practice: {
+                    tasks: ["1. 加载并分析用户数据", "2. 创建时间相关特征", "3. 创建行为相关特征", "4. 优化特征结构"],
+                    code: `import pandas as pd
+
+# 加载数据
+df = pd.read_csv('user_logs.csv')
+
+# 查看数据基本信息
+print(df.info())
+print(df.head())
+
+# 预处理时间数据
+df['login_time'] = pd.to_datetime(df['login_time'])
+df['login_hour'] = df['login_time'].dt.hour
+df['login_day'] = df['login_time'].dt.dayofweek
+df['login_month'] = df['login_time'].dt.month
+
+# 创建时间相关特征
+df['is_weekend'] = df['login_day'].apply(lambda x: 1 if x >= 5 else 0)
+df['is_peak_hour'] = df['login_hour'].apply(lambda x: 1 if 9 <= x <= 18 else 0)
+
+# 创建行为相关特征
+df['avg_pages_per_minute'] = df['pages_visited'] / (df['duration'] / 60)
+df['purchase_rate'] = df.groupby('user_id')['purchase'].transform('mean')
+
+# 创建用户活跃度特征
+df['login_frequency'] = df.groupby('user_id')['login_time'].transform('count')
+
+# 查看新特征
+print('\n新特征:')
+print(df[['login_hour', 'is_weekend', 'is_peak_hour', 'avg_pages_per_minute', 'purchase_rate', 'login_frequency']].head())
+
+# 保存处理后的数据
+df.to_csv('user_logs_features.csv', index=False)
+print('\n特征工程完成！')`
+                },
+                review: {
+                    knowledge: ["特征工程的基本概念", "时间特征的提取", "行为特征的创建", "特征选择的方法", "特征缩放的重要性"],
+                   易错点: ["特征的业务含义", "避免创建冗余特征", "处理类别特征的方法", "特征之间的相关性", "特征工程对模型性能的影响"]
+                }
+            },
+            {
+                title: "项目09：异常值检测",
+                task: "核心任务：统计+算法检测异常数据",
+                data: "使用数据：retail_orders.csv",
+                practice: {
+                    tasks: ["1. 加载并分析销售数据", "2. 使用统计方法检测异常值", "3. 使用机器学习方法检测异常值", "4. 分析异常值的原因"],
+                    code: `import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.ensemble import IsolationForest
+
+# 设置中文字体
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
+
+# 加载数据
+df = pd.read_csv('retail_orders.csv')
+
+# 查看数据基本信息
+print(df.info())
+print(df.describe())
+
+# 使用3σ原则检测异常值
+def detect_outliers_3sigma(data, column):
+    mean = data[column].mean()
+    std = data[column].std()
+    lower_bound = mean - 3 * std
+    upper_bound = mean + 3 * std
+    outliers = data[(data[column] < lower_bound) | (data[column] > upper_bound)]
+    return outliers, lower_bound, upper_bound
+
+# 检测总价异常值
+outliers_3sigma, lower, upper = detect_outliers_3sigma(df, 'total_price')
+print(f'\n3σ原则检测到的异常值数量: {len(outliers_3sigma)}')
+print(f'正常范围: [{lower:.2f}, {upper:.2f}]')
+
+# 使用IQR方法检测异常值
+def detect_outliers_iqr(data, column):
+    Q1 = data[column].quantile(0.25)
+    Q3 = data[column].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    outliers = data[(data[column] < lower_bound) | (data[column] > upper_bound)]
+    return outliers, lower_bound, upper_bound
+
+# 检测总价异常值
+outliers_iqr, lower, upper = detect_outliers_iqr(df, 'total_price')
+print(f'\nIQR方法检测到的异常值数量: {len(outliers_iqr)}')
+print(f'正常范围: [{lower:.2f}, {upper:.2f}]')
+
+# 使用孤立森林检测异常值
+iso_forest = IsolationForest(contamination=0.01, random_state=42)
+outliers_if = iso_forest.fit_predict(df[['total_price', 'quantity', 'unit_price']])
+df['is_outlier'] = outliers_if == -1
+print(f'\n孤立森林检测到的异常值数量: {df[df["is_outlier"]].shape[0]}')
+
+# 可视化异常值
+plt.figure(figsize=(12, 6))
+plt.scatter(df.index, df['total_price'], c=df['is_outlier'], cmap='coolwarm')
+plt.title('异常值检测结果')
+plt.xlabel('数据索引')
+plt.ylabel('总价')
+plt.colorbar(label='是否异常')
+plt.show()`
+                },
+                review: {
+                    knowledge: ["异常值检测的基本概念", "统计方法检测异常值", "机器学习方法检测异常值", "异常值的处理策略", "异常值对分析结果的影响"],
+                   易错点: ["异常值检测方法的选择", "阈值的合理设置", "异常值的误判", "异常值的业务含义分析", "处理异常值时的数据丢失"]
+                }
+            },
+            {
+                title: "项目10：多数据集合并",
+                task: "核心任务：整合多源数据综合分析",
+                data: "使用数据：retail_orders.csv",
+                practice: {
+                    tasks: ["1. 加载多个数据集", "2. 基于关键字段合并数据", "3. 处理合并后的重复数据", "4. 进行综合分析"],
+                    code: `import pandas as pd
+
+# 假设我们有两个数据集：订单数据和产品数据
+# 这里我们模拟产品数据
+order_df = pd.read_csv('retail_orders.csv')
+
+# 模拟产品数据
+product_data = {
+    'product_id': [1, 2, 3, 4, 5],
+    'product_name': ['产品A', '产品B', '产品C', '产品D', '产品E'],
+    'category': ['类别1', '类别2', '类别1', '类别3', '类别2'],
+    'cost_price': [10, 20, 15, 25, 18]
+}
+product_df = pd.DataFrame(product_data)
+
+# 查看两个数据集
+print('订单数据:')
+print(order_df.head())
+print('\n产品数据:')
+print(product_df.head())
+
+# 基于product_id合并数据
+merged_df = pd.merge(order_df, product_df, on='product_id', how='left')
+print('\n合并后的数据:')
+print(merged_df.head())
+
+# 计算利润
+merged_df['profit'] = merged_df['total_price'] - (merged_df['quantity'] * merged_df['cost_price'])
+
+# 按产品类别分析利润
+category_profit = merged_df.groupby('category').agg({
+    'total_price': 'sum',
+    'profit': 'sum'
+}).reset_index()
+print('\n按类别分析利润:')
+print(category_profit)
+
+# 按产品分析利润
+product_profit = merged_df.groupby('product_name').agg({
+    'total_price': 'sum',
+    'profit': 'sum'
+}).reset_index().sort_values('profit', ascending=False)
+print('\n按产品分析利润:')
+print(product_profit)`
+                },
+                review: {
+                    knowledge: ["数据合并的基本概念", "不同合并方式的区别", "合并键的选择", "处理合并后的数据", "多源数据的综合分析"],
+                   易错点: ["合并键的数据类型一致性", "处理缺失值", "避免数据重复", "合并方式的正确选择", "内存使用优化"]
+                }
+            }
+        ];
+        
+        // 页面切换
+        function switchPage(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 更新导航栏状态
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + pageId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // 项目测试题目数据
+        const projectTests = [
+            {
+                questions: [
+                    {
+                        question: "1. 以下哪种方法可以处理缺失值？",
+                        options: ["A. dropna()", "B. fillna()", "C. both A and B", "D. none of the above"],
+                        answer: "C",
+                        explanation: "dropna()用于删除包含缺失值的行，fillna()用于填充缺失值，两者都可以处理缺失值。"
+                    },
+                    {
+                        question: "2. 时间序列数据格式化使用的函数是？",
+                        options: ["A. to_datetime()", "B. format_date()", "C. parse_date()", "D. date_format()"],
+                        answer: "A",
+                        explanation: "pandas中的to_datetime()函数用于将字符串转换为 datetime类型。"
+                    },
+                    {
+                        question: "3. 计算总价的公式是？",
+                        options: ["A. 数量 + 单价", "B. 数量 - 单价", "C. 数量 * 单价", "D. 数量 / 单价"],
+                        answer: "C",
+                        explanation: "总价 = 数量 * 单价。"
+                    },
+                    {
+                        question: "4. 异常值检测可以使用哪些方法？",
+                        options: ["A. 箱线图", "B. 3σ原则", "C. IQR方法", "D. all of the above"],
+                        answer: "D",
+                        explanation: "箱线图、3σ原则和IQR方法都可以用于异常值检测。"
+                    },
+                    {
+                        question: "5. 保存处理后的数据使用的函数是？",
+                        options: ["A. save()", "B. to_csv()", "C. export()", "D. write()"],
+                        answer: "B",
+                        explanation: "pandas中的to_csv()函数用于将数据保存为CSV文件。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. 分组聚合使用的函数是？",
+                        options: ["A. groupby()", "B. aggregate()", "C. both A and B", "D. none of the above"],
+                        answer: "C",
+                        explanation: "groupby()用于分组，aggregate()用于聚合，两者结合使用实现分组聚合。"
+                    },
+                    {
+                        question: "2. 以下哪种聚合函数用于计算平均值？",
+                        options: ["A. sum()", "B. mean()", "C. count()", "D. max()"],
+                        answer: "B",
+                        explanation: "mean()函数用于计算平均值。"
+                    },
+                    {
+                        question: "3. 按多个字段分组时，应该使用什么参数？",
+                        options: ["A. by='field'", "B. by=['field1', 'field2']", "C. by=('field1', 'field2')", "D. both B and C"],
+                        answer: "D",
+                        explanation: "可以使用列表或元组传递多个分组字段。"
+                    },
+                    {
+                        question: "4. 透视表使用的函数是？",
+                        options: ["A. pivot()", "B. pivot_table()", "C. table()", "D. cross()"],
+                        answer: "B",
+                        explanation: "pivot_table()函数用于创建透视表。"
+                    },
+                    {
+                        question: "5. 分组后重置索引使用的函数是？",
+                        options: ["A. reset_index()", "B. reindex()", "C. set_index()", "D. index_reset()"],
+                        answer: "A",
+                        explanation: "reset_index()函数用于重置索引。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. 购物篮分析主要用于分析什么？",
+                        options: ["A. 商品价格", "B. 商品关联关系", "C. 商品库存", "D. 商品销量"],
+                        answer: "B",
+                        explanation: "购物篮分析主要用于分析商品之间的关联关系。"
+                    },
+                    {
+                        question: "2. 关联规则中的支持度是指什么？",
+                        options: ["A. 规则出现的频率", "B. 规则的置信度", "C. 规则的提升度", "D. 规则的重要性"],
+                        answer: "A",
+                        explanation: "支持度是指规则出现的频率。"
+                    },
+                    {
+                        question: "3. 关联规则中的置信度是指什么？",
+                        options: ["A. 规则出现的频率", "B. 规则的可靠性", "C. 规则的提升度", "D. 规则的重要性"],
+                        answer: "B",
+                        explanation: "置信度是指规则的可靠性。"
+                    },
+                    {
+                        question: "4. Apriori算法用于什么？",
+                        options: ["A. 聚类分析", "B. 关联规则挖掘", "C. 分类分析", "D. 回归分析"],
+                        answer: "B",
+                        explanation: "Apriori算法用于关联规则挖掘。"
+                    },
+                    {
+                        question: "5. 购物篮分析的应用场景不包括？",
+                        options: ["A. 商品摆放优化", "B. 促销活动设计", "C. 客户流失预测", "D. 商品捆绑销售"],
+                        answer: "C",
+                        explanation: "客户流失预测不属于购物篮分析的应用场景。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. K-means聚类算法的k值是指什么？",
+                        options: ["A. 迭代次数", "B. 聚类数量", "C. 学习率", "D. 距离阈值"],
+                        answer: "B",
+                        explanation: "k值是指聚类的数量。"
+                    },
+                    {
+                        question: "2. K-means聚类的距离计算方法通常是？",
+                        options: ["A. 曼哈顿距离", "B. 欧几里得距离", "C. 余弦相似度", "D. 汉明距离"],
+                        answer: "B",
+                        explanation: "K-means聚类通常使用欧几里得距离计算。"
+                    },
+                    {
+                        question: "3. 以下哪种方法可以确定最佳k值？",
+                        options: ["A. 肘部法则", "B. 交叉验证", "C. 网格搜索", "D. 所有选项都对"],
+                        answer: "A",
+                        explanation: "肘部法则是确定最佳k值的常用方法。"
+                    },
+                    {
+                        question: "4. 聚类分析属于哪种学习类型？",
+                        options: ["A. 监督学习", "B. 无监督学习", "C. 半监督学习", "D. 强化学习"],
+                        answer: "B",
+                        explanation: "聚类分析属于无监督学习。"
+                    },
+                    {
+                        question: "5. K-means算法的缺点不包括？",
+                        options: ["A. 对初始聚类中心敏感", "B. 只能处理数值型数据", "C. 需要预先指定k值", "D. 可以处理任意形状的聚类"],
+                        answer: "D",
+                        explanation: "K-means算法不能处理任意形状的聚类，这是它的缺点之一。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. matplotlib中绘制折线图使用的函数是？",
+                        options: ["A. plt.bar()", "B. plt.plot()", "C. plt.scatter()", "D. plt.pie()"],
+                        answer: "B",
+                        explanation: "plt.plot()函数用于绘制折线图。"
+                    },
+                    {
+                        question: "2. 设置中文字体的参数是？",
+                        options: ["A. font.family", "B. font.sans-serif", "C. font.size", "D. font.style"],
+                        answer: "B",
+                        explanation: "plt.rcParams['font.sans-serif']用于设置中文字体。"
+                    },
+                    {
+                        question: "3. 绘制柱状图使用的函数是？",
+                        options: ["A. plt.bar()", "B. plt.plot()", "C. plt.scatter()", "D. plt.pie()"],
+                        answer: "A",
+                        explanation: "plt.bar()函数用于绘制柱状图。"
+                    },
+                    {
+                        question: "4. 绘制散点图使用的函数是？",
+                        options: ["A. plt.bar()", "B. plt.plot()", "C. plt.scatter()", "D. plt.pie()"],
+                        answer: "C",
+                        explanation: "plt.scatter()函数用于绘制散点图。"
+                    },
+                    {
+                        question: "5. 显示图表使用的函数是？",
+                        options: ["A. plt.show()", "B. plt.display()", "C. plt.render()", "D. plt.draw()"],
+                        answer: "A",
+                        explanation: "plt.show()函数用于显示图表。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. A/B测试的目的是什么？",
+                        options: ["A. 比较两个版本的性能差异", "B. 预测未来趋势", "C. 聚类分析", "D. 关联规则挖掘"],
+                        answer: "A",
+                        explanation: "A/B测试的目的是比较两个版本的性能差异。"
+                    },
+                    {
+                        question: "2. 显著性检验的p值通常设置为多少？",
+                        options: ["A. 0.01", "B. 0.05", "C. 0.1", "D. 0.5"],
+                        answer: "B",
+                        explanation: "显著性检验的p值通常设置为0.05。"
+                    },
+                    {
+                        question: "3. 如果p值小于0.05，说明什么？",
+                        options: ["A. 两个版本没有显著差异", "B. 两个版本有显著差异", "C. 无法判断", "D. 以上都不对"],
+                        answer: "B",
+                        explanation: "如果p值小于0.05，说明两个版本有显著差异。"
+                    },
+                    {
+                        question: "4. A/B测试中，实验组和对照组的样本量应该？",
+                        options: ["A. 实验组大于对照组", "B. 对照组大于实验组", "C. 相等", "D. 没有要求"],
+                        answer: "C",
+                        explanation: "A/B测试中，实验组和对照组的样本量应该相等。"
+                    },
+                    {
+                        question: "5. 常用的显著性检验方法不包括？",
+                        options: ["A. t检验", "B. 卡方检验", "C. F检验", "D. 聚类分析"],
+                        answer: "D",
+                        explanation: "聚类分析不属于显著性检验方法。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. 时间序列分析主要用于分析什么？",
+                        options: ["A. 空间数据", "B. 时间相关的数据", "C. 分类数据", "D. 文本数据"],
+                        answer: "B",
+                        explanation: "时间序列分析主要用于分析时间相关的数据。"
+                    },
+                    {
+                        question: "2. ARIMA模型中的AR代表什么？",
+                        options: ["A. 自回归", "B. 移动平均", "C. 差分", "D. 趋势"],
+                        answer: "A",
+                        explanation: "AR代表自回归(Autoregressive)。"
+                    },
+                    {
+                        question: "3. ARIMA模型中的MA代表什么？",
+                        options: ["A. 自回归", "B. 移动平均", "C. 差分", "D. 趋势"],
+                        answer: "B",
+                        explanation: "MA代表移动平均(Moving Average)。"
+                    },
+                    {
+                        question: "4. 时间序列的趋势成分是指？",
+                        options: ["A. 长期的变化方向", "B. 季节性的变化", "C. 随机波动", "D. 周期性变化"],
+                        answer: "A",
+                        explanation: "趋势成分是指时间序列的长期变化方向。"
+                    },
+                    {
+                        question: "5. 时间序列的季节性成分是指？",
+                        options: ["A. 长期的变化方向", "B. 固定周期的重复变化", "C. 随机波动", "D. 不规则变化"],
+                        answer: "B",
+                        explanation: "季节性成分是指时间序列中固定周期的重复变化。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. 特征工程的目的是什么？",
+                        options: ["A. 减少数据维度", "B. 提高模型性能", "C. 简化模型", "D. 所有选项都对"],
+                        answer: "D",
+                        explanation: "特征工程的目的包括减少数据维度、提高模型性能和简化模型。"
+                    },
+                    {
+                        question: "2. 以下哪种方法属于特征选择？",
+                        options: ["A. 主成分分析", "B. 决策树特征重要性", "C. 线性判别分析", "D. 所有选项都对"],
+                        answer: "D",
+                        explanation: "主成分分析、决策树特征重要性和线性判别分析都属于特征选择方法。"
+                    },
+                    {
+                        question: "3. 特征缩放的方法不包括？",
+                        options: ["A. 标准化", "B. 归一化", "C. 独热编码", "D. 对数变换"],
+                        answer: "C",
+                        explanation: "独热编码不属于特征缩放方法，它是一种特征编码方法。"
+                    },
+                    {
+                        question: "4. 处理类别特征的方法是？",
+                        options: ["A. 标准化", "B. 独热编码", "C. 归一化", "D. 对数变换"],
+                        answer: "B",
+                        explanation: "独热编码是处理类别特征的常用方法。"
+                    },
+                    {
+                        question: "5. 特征交叉的目的是什么？",
+                        options: ["A. 捕捉特征间的交互作用", "B. 减少特征数量", "C. 提高模型解释性", "D. 降低模型复杂度"],
+                        answer: "A",
+                        explanation: "特征交叉的目的是捕捉特征间的交互作用。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. 异常值检测的目的是什么？",
+                        options: ["A. 识别数据中的异常情况", "B. 预测未来趋势", "C. 聚类分析", "D. 关联规则挖掘"],
+                        answer: "A",
+                        explanation: "异常值检测的目的是识别数据中的异常情况。"
+                    },
+                    {
+                        question: "2. 以下哪种方法属于统计异常值检测？",
+                        options: ["A. 3σ原则", "B. IQR方法", "C. 箱线图", "D. 所有选项都对"],
+                        answer: "D",
+                        explanation: "3σ原则、IQR方法和箱线图都属于统计异常值检测方法。"
+                    },
+                    {
+                        question: "3. 以下哪种方法属于机器学习异常值检测？",
+                        options: ["A. 孤立森林", "B. 局部异常因子", "C. 聚类方法", "D. 所有选项都对"],
+                        answer: "D",
+                        explanation: "孤立森林、局部异常因子和聚类方法都属于机器学习异常值检测方法。"
+                    },
+                    {
+                        question: "4. 3σ原则中，异常值是指什么？",
+                        options: ["A. 超出均值±1σ的数据", "B. 超出均值±2σ的数据", "C. 超出均值±3σ的数据", "D. 超出均值±4σ的数据"],
+                        answer: "C",
+                        explanation: "3σ原则中，异常值是指超出均值±3σ的数据。"
+                    },
+                    {
+                        question: "5. IQR方法中，异常值的阈值是？",
+                        options: ["A. Q1-1.5*IQR 和 Q3+1.5*IQR", "B. Q1-2*IQR 和 Q3+2*IQR", "C. Q1-2.5*IQR 和 Q3+2.5*IQR", "D. Q1-3*IQR 和 Q3+3*IQR"],
+                        answer: "A",
+                        explanation: "IQR方法中，异常值的阈值是Q1-1.5*IQR 和 Q3+1.5*IQR。"
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        question: "1. 多数据集合并使用的函数是？",
+                        options: ["A. merge()", "B. concat()", "C. join()", "D. 所有选项都对"],
+                        answer: "D",
+                        explanation: "merge()、concat()和join()都可以用于多数据集合并。"
+                    },
+                    {
+                        question: "2. 基于列合并使用的函数是？",
+                        options: ["A. merge()", "B. concat()", "C. join()", "D. append()"],
+                        answer: "A",
+                        explanation: "merge()函数用于基于列合并数据集。"
+                    },
+                    {
+                        question: "3. 基于索引合并使用的函数是？",
+                        options: ["A. merge()", "B. concat()", "C. join()", "D. append()"],
+                        answer: "C",
+                        explanation: "join()函数用于基于索引合并数据集。"
+                    },
+                    {
+                        question: "4. 纵向合并使用的函数是？",
+                        options: ["A. merge()", "B. concat()", "C. join()", "D. append()"],
+                        answer: "B",
+                        explanation: "concat()函数可以用于纵向合并数据集。"
+                    },
+                    {
+                        question: "5. 合并的方式不包括？",
+                        options: ["A. inner join", "B. outer join", "C. left join", "D. cross join"],
+                        answer: "D",
+                        explanation: "cross join不属于常用的合并方式。"
+                    }
+                ]
+            }
+        ];
+        
+        // 项目切换
+        function switchProject(index) {
+            // 更新当前项目索引
+            currentProjectIndex = index;
+            
+            // 更新项目列表状态
+            document.querySelectorAll('.project-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.project-item')[index].classList.add('active');
+            
+            // 更新项目详情
+            const project = projects[index];
+            document.getElementById('project-title').textContent = project.title;
+            document.getElementById('project-task').textContent = project.task;
+            document.getElementById('project-data').textContent = project.data;
+            
+            // 更新练习内容
+            updatePracticeContent(index);
+            
+            // 更新复习内容
+            updateReviewContent(index);
+            
+            // 更新测试题目
+            updateTestQuestions(index);
+        }
+        
+        // 更新练习内容
+        function updatePracticeContent(projectIndex) {
+            const practiceContent = document.getElementById('practice');
+            const project = projects[projectIndex];
+            
+            let html = `
+                <h4>实操任务说明</h4>
+            `;
+            project.practice.tasks.forEach(task => {
+                html += `<p>${task}</p>`;
+            });
+            
+            html += `
+                <h4>代码模板</h4>
+                <div class="code-block">
+                    ${project.practice.code}
+                </div>
+            `;
+            
+            practiceContent.innerHTML = html;
+        }
+        
+        // 更新复习内容
+        function updateReviewContent(projectIndex) {
+            const reviewContent = document.getElementById('review');
+            const project = projects[projectIndex];
+            
+            let html = `
+                <h4>知识点梳理</h4>
+                <ul>
+            `;
+            project.review.knowledge.forEach(item => {
+                html += `<li>${item}</li>`;
+            });
+            html += `
+                </ul>
+                <h4>易错点总结</h4>
+                <ul>
+            `;
+            project.review.易错点.forEach(item => {
+                html += `<li>${item}</li>`;
+            });
+            html += `
+                </ul>
+            `;
+            
+            reviewContent.innerHTML = html;
+        }
+        
+        // 更新测试题目
+        function updateTestQuestions(projectIndex) {
+            const testContent = document.getElementById('test');
+            const questions = projectTests[projectIndex].questions;
+            
+            let html = `
+                <div class="test-controls">
+                    <button class="consult-btn" onclick="checkAnswers()">提交答案</button>
+                    <button class="consult-btn" onclick="showAnswers()">显示答案</button>
+                </div>
+                <br>
+            `;
+            
+            questions.forEach((q, i) => {
+                html += `
+                    <div class="test-question" data-question-index="${i}">
+                        <h5>${q.question}</h5>
+                        <div class="test-options">
+                `;
+                q.options.forEach((option, j) => {
+                    const optionLetter = String.fromCharCode(65 + j);
+                    html += `
+                        <div class="test-option" onclick="selectOption(${i}, '${optionLetter}')">
+                            <input type="radio" name="question${i}" value="${optionLetter}" id="q${i}${optionLetter}">
+                            <label for="q${i}${optionLetter}">${option}</label>
+                        </div>
+                    `;
+                });
+                html += `
+                        </div>
+                        <div class="test-answer" style="display: none;">
+                            <strong>正确答案：${q.answer}</strong><br>
+                            <strong>你的答案：</strong><span class="user-answer">未作答</span><br>
+                            <strong>结果：</strong><span class="result"></span><br>
+                            <strong>解析：</strong>${q.explanation}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            testContent.innerHTML = html;
+        }
+        
+        // 选择选项
+        function selectOption(questionIndex, option) {
+            const question = document.querySelector(`.test-question[data-question-index="${questionIndex}"]`);
+            const radio = question.querySelector(`input[value="${option}"]`);
+            if (radio) {
+                radio.checked = true;
+            }
+        }
+        
+        // 检查答案
+        function checkAnswers() {
+            const questions = document.querySelectorAll('.test-question');
+            let correctCount = 0;
+            
+            questions.forEach((question, index) => {
+                const selectedOption = question.querySelector('input:checked');
+                const userAnswer = selectedOption ? selectedOption.value : '未作答';
+                const correctAnswer = projectTests[currentProjectIndex].questions[index].answer;
+                const answerDiv = question.querySelector('.test-answer');
+                const userAnswerSpan = question.querySelector('.user-answer');
+                const resultSpan = question.querySelector('.result');
+                
+                userAnswerSpan.textContent = userAnswer;
+                
+                if (userAnswer === correctAnswer) {
+                    resultSpan.textContent = '正确';
+                    resultSpan.style.color = 'green';
+                    correctCount++;
+                } else {
+                    resultSpan.textContent = '错误';
+                    resultSpan.style.color = 'red';
+                }
+                
+                answerDiv.style.display = 'block';
+            });
+            
+            // 显示得分
+            const score = Math.round((correctCount / questions.length) * 100);
+            alert(`测试完成！你的得分：${score}分 (${correctCount}/${questions.length})`);
+        }
+        
+        // 显示答案
+        function showAnswers() {
+            const questions = document.querySelectorAll('.test-question');
+            
+            questions.forEach((question, index) => {
+                const selectedOption = question.querySelector('input:checked');
+                const userAnswer = selectedOption ? selectedOption.value : '未作答';
+                const answerDiv = question.querySelector('.test-answer');
+                const userAnswerSpan = question.querySelector('.user-answer');
+                
+                userAnswerSpan.textContent = userAnswer;
+                answerDiv.style.display = 'block';
+            });
+        }
+        
+        // 当前项目索引
+        let currentProjectIndex = 0;
+        
+        // 选项卡切换
+        function switchTab(tabId) {
+            // 更新选项卡状态
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.textContent === tabId.charAt(0).toUpperCase() + tabId.slice(1)) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // 更新选项卡内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // 资源卡片展开/收起
+        function toggleResource(element) {
+            const content = element.nextElementSibling;
+            const arrow = element.querySelector('span');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                arrow.textContent = '▼';
+            } else {
+                content.classList.add('active');
+                arrow.textContent = '▲';
+            }
+        }
+        
+        // 常见问题展开/收起
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const arrow = element.querySelector('span');
+            
+            if (answer.classList.contains('active')) {
+                answer.classList.remove('active');
+                arrow.textContent = '▼';
+            } else {
+                answer.classList.add('active');
+                arrow.textContent = '▲';
+            }
+        }
+        
+        // 显示咨询卡片
+        function showConsultCard() {
+            document.querySelector('.overlay').classList.add('active');
+            document.querySelector('.consult-card').classList.add('active');
+        }
+        
+        // 隐藏咨询卡片
+        function hideConsultCard() {
+            document.querySelector('.overlay').classList.remove('active');
+            document.querySelector('.consult-card').classList.remove('active');
+        }
+        
+        // 导航栏点击事件
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageId = this.getAttribute('href').substring(1);
+                switchPage(pageId);
+            });
+        });
+        
+        // 初始化页面
+        window.addEventListener('DOMContentLoaded', function() {
+            // 默认显示首页
+            switchPage('home');
+        });
+    </script>
+</body>
+</html>
