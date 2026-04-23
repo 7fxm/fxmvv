@@ -2786,6 +2786,13 @@ print(product_profit)`
                 const themeText = document.querySelector('.theme-text');
                 if (themeIcon) themeIcon.textContent = '☀️';
                 if (themeText) themeText.textContent = '浅色模式';
+            } else {
+                // 默认使用浅色模式
+                document.body.classList.remove('dark-mode');
+                const themeIcon = document.querySelector('.theme-icon');
+                const themeText = document.querySelector('.theme-text');
+                if (themeIcon) themeIcon.textContent = '🌙';
+                if (themeText) themeText.textContent = '深色模式';
             }
         }
 
