@@ -816,75 +816,6 @@ print('数据清洗完成！')
                     </div>
                     
                     <div id="test" class="tab-content">
-                        <div class="test-question">
-                            <h5>1. 以下哪种方法可以处理缺失值？</h5>
-                            <div class="test-options">
-                                <div class="test-option">A. dropna()</div>
-                                <div class="test-option">B. fillna()</div>
-                                <div class="test-option">C. both A and B</div>
-                                <div class="test-option">D. none of the above</div>
-                            </div>
-                            <div class="test-answer">
-                                <strong>答案：C</strong><br>
-                                解析：dropna()用于删除包含缺失值的行，fillna()用于填充缺失值，两者都可以处理缺失值。
-                            </div>
-                        </div>
-                        
-                        <div class="test-question">
-                            <h5>2. 时间序列数据格式化使用的函数是？</h5>
-                            <div class="test-options">
-                                <div class="test-option">A. to_datetime()</div>
-                                <div class="test-option">B. format_date()</div>
-                                <div class="test-option">C. parse_date()</div>
-                                <div class="test-option">D. date_format()</div>
-                            </div>
-                            <div class="test-answer">
-                                <strong>答案：A</strong><br>
-                                解析：pandas中的to_datetime()函数用于将字符串转换为 datetime类型。
-                            </div>
-                        </div>
-                        
-                        <div class="test-question">
-                            <h5>3. 计算总价的公式是？</h5>
-                            <div class="test-options">
-                                <div class="test-option">A. 数量 + 单价</div>
-                                <div class="test-option">B. 数量 - 单价</div>
-                                <div class="test-option">C. 数量 * 单价</div>
-                                <div class="test-option">D. 数量 / 单价</div>
-                            </div>
-                            <div class="test-answer">
-                                <strong>答案：C</strong><br>
-                                解析：总价 = 数量 * 单价。
-                            </div>
-                        </div>
-                        
-                        <div class="test-question">
-                            <h5>4. 异常值检测可以使用哪些方法？</h5>
-                            <div class="test-options">
-                                <div class="test-option">A. 箱线图</div>
-                                <div class="test-option">B. 3σ原则</div>
-                                <div class="test-option">C. IQR方法</div>
-                                <div class="test-option">D. all of the above</div>
-                            </div>
-                            <div class="test-answer">
-                                <strong>答案：D</strong><br>
-                                解析：箱线图、3σ原则和IQR方法都可以用于异常值检测。
-                            </div>
-                        </div>
-                        
-                        <div class="test-question">
-                            <h5>5. 保存处理后的数据使用的函数是？</h5>
-                            <div class="test-options">
-                                <div class="test-option">A. save()</div>
-                                <div class="test-option">B. to_csv()</div>
-                                <div class="test-option">C. export()</div>
-                                <div class="test-option">D. write()</div>
-                            </div>
-                            <div class="test-answer">
-                                <strong>答案：B</strong><br>
-                                解析：pandas中的to_csv()函数用于将数据保存为CSV文件。
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2605,6 +2536,8 @@ print(product_profit)`
         window.addEventListener('DOMContentLoaded', function() {
             // 默认显示首页
             switchPage('home');
+            // 初始化第一个项目的测试内容
+            updateTestQuestions(0);
         });
     </script>
 </body>
