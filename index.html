@@ -19,14 +19,165 @@
             line-height: 1.6;
         }
         
-        /* 颜色变量 */
+        /* 颜色变量 - 浅色模式 */
         :root {
             --primary-color: #335C81;
             --secondary-color: #8FA6CB;
             --light-gray: #F5F7FA;
             --dark-gray: #2C3E50;
             --extra-light-gray: #E8EEF2;
+            --bg-color: #F5F7FA;
+            --text-color: #2C3E50;
+            --card-bg: white;
+            --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        /* 深色模式 */
+        body.dark-mode {
+            --bg-color: #1a1a2e;
+            --text-color: #e8e8e8;
+            --card-bg: #16213e;
+            --card-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            --dark-gray: #e8e8e8;
+            --extra-light-gray: #2a2a4a;
+        }
+
+        body.dark-mode {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        body.dark-mode .navbar {
+            background-color: var(--card-bg);
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .project-details,
+        body.dark-mode .project-list {
+            background-color: var(--card-bg);
+            box-shadow: var(--card-shadow);
+        }
+
+        body.dark-mode .nav-menu a {
+            color: var(--text-color);
+        }
+
+        /* 主题切换按钮 */
+        .theme-toggle {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-load {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* 项目进度标记 */
+        .project-item.completed {
+            position: relative;
+        }
+
+        .project-item.completed::after {
+            content: '✓ 已完成';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #10b981;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .project-item.completed.active {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* 代码高亮样式 */
+        .code-block {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', 'Consolas', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        body.dark-mode .code-block {
+            background: #0f0f23;
+        }
+
+        .code-block::before {
+            content: '';
+            display: block;
+            margin-bottom: 1rem;
+            width: 50px;
+            height: 10px;
+            background: #ff5f56;
+            border-radius: 50%;
+            box-shadow: 15px 0 0 #ffbd2e, 30px 0 0 #27c93f;
+        }
+
+        /* 语法高亮颜色 */
+        .code-keyword { color: #c678dd; }
+        .code-string { color: #98c379; }
+        .code-comment { color: #5c6370; font-style: italic; }
+        .code-function { color: #61afef; }
+        .code-number { color: #d19a66; }
+        .code-variable { color: #e06c75; }
         
         /* 顶部导航栏 */
         .navbar {
@@ -597,7 +748,13 @@
                 <li><a href="#resources">学习资源</a></li>
                 <li><a href="#faq">常见问题</a></li>
             </ul>
-            <button class="consult-btn" onclick="showConsultCard()">咨询老师</button>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span class="theme-icon">🌙</span>
+                    <span class="theme-text">深色模式</span>
+                </button>
+                <button class="consult-btn" onclick="showConsultCard()">咨询老师</button>
+            </div>
         </div>
     </nav>
     
@@ -2532,13 +2689,185 @@ print(product_profit)`
             });
         });
         
+        // 主题切换功能
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-icon');
+            const themeText = document.querySelector('.theme-text');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = '浅色模式';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = '深色模式';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // 保存和加载主题设置
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                const themeIcon = document.querySelector('.theme-icon');
+                const themeText = document.querySelector('.theme-text');
+                if (themeIcon) themeIcon.textContent = '☀️';
+                if (themeText) themeText.textContent = '浅色模式';
+            }
+        }
+
+        // 项目进度功能
+        let completedProjects = JSON.parse(localStorage.getItem('completedProjects')) || [];
+
+        function toggleProjectComplete(index) {
+            const projectIndex = completedProjects.indexOf(index);
+            if (projectIndex === -1) {
+                completedProjects.push(index);
+            } else {
+                completedProjects.splice(projectIndex, 1);
+            }
+            localStorage.setItem('completedProjects', JSON.stringify(completedProjects));
+            updateProjectProgress();
+            updateProgressBar();
+        }
+
+        function updateProjectProgress() {
+            const projectItems = document.querySelectorAll('.project-item');
+            projectItems.forEach((item, index) => {
+                if (completedProjects.includes(index)) {
+                    item.classList.add('completed');
+                } else {
+                    item.classList.remove('completed');
+                }
+            });
+        }
+
+        function updateProgressBar() {
+            const totalProjects = 10;
+            const completed = completedProjects.length;
+            const percentage = (completed / totalProjects) * 100;
+            
+            const progressFill = document.querySelector('.progress-fill');
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+        }
+
+        // 简单的代码高亮（模拟）
+        function highlightCode(code) {
+            return code
+                .replace(/import|from|as|def|class|if|else|for|while|return|try|except|finally|with|yield|lambda|pass|break|continue|raise|global|nonlocal|True|False|None/g, '<span class="code-keyword">$&</span>')
+                .replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, '<span class="code-string">$&</span>')
+                .replace(/#.*/g, '<span class="code-comment">$&</span>')
+                .replace(/\b(\d+\.?\d*)\b/g, '<span class="code-number">$1</span>')
+                .replace(/print|read_csv|dropna|fillna|to_datetime|groupby|agg|to_csv|head|info|describe/g, '<span class="code-function">$&</span>');
+        }
+
+        // 更新练习内容时添加代码高亮
+        const originalUpdatePracticeContent = updatePracticeContent;
+        function updatePracticeContent(projectIndex) {
+            const practiceContent = document.getElementById('practice');
+            const project = projects[projectIndex];
+            
+            let html = `
+                <h4>实操任务说明</h4>
+            `;
+            project.practice.tasks.forEach(task => {
+                html += `<p>${task}</p>`;
+            });
+            
+            html += `
+                <h4>代码模板</h4>
+                <div class="code-block">
+                    ${highlightCode(project.practice.code)}
+                </div>
+            `;
+            
+            practiceContent.innerHTML = html;
+        }
+
+        // 添加完成项目按钮
+        function addCompleteButton() {
+            const projectDetails = document.querySelector('.project-details');
+            if (projectDetails && !projectDetails.querySelector('.complete-project-btn')) {
+                const btn = document.createElement('button');
+                btn.className = 'consult-btn';
+                btn.style.marginTop = '1rem';
+                btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                btn.textContent = '✅ 标记为已完成';
+                btn.onclick = () => toggleProjectComplete(currentProjectIndex);
+                projectDetails.appendChild(btn);
+            }
+        }
+
+        // 修改switchProject函数，添加动画效果和进度更新
+        const originalSwitchProject = switchProject;
+        function switchProject(index) {
+            currentProjectIndex = index;
+            
+            // 更新项目列表状态
+            document.querySelectorAll('.project-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.project-item')[index].classList.add('active');
+            
+            // 更新项目详情
+            const project = projects[index];
+            document.getElementById('project-title').textContent = project.title;
+            document.getElementById('project-task').textContent = project.task;
+            document.getElementById('project-data').textContent = project.data;
+            
+            // 更新练习、复习、测试内容
+            updatePracticeContent(index);
+            updateReviewContent(index);
+            updateTestQuestions(index);
+            
+            // 添加完成按钮和动画
+            addCompleteButton();
+        }
+
         // 初始化页面
         window.addEventListener('DOMContentLoaded', function() {
+            // 加载主题
+            loadTheme();
+            
             // 默认显示首页
             switchPage('home');
+            
             // 初始化第一个项目的测试内容
             updateTestQuestions(0);
+            
+            // 更新项目进度显示
+            updateProjectProgress();
+            
+            // 添加进度条到学习路径页面
+            addProgressBar();
         });
+
+        // 添加进度条
+        function addProgressBar() {
+            const pathSection = document.querySelector('#path');
+            if (pathSection && !pathSection.querySelector('.progress-bar')) {
+                const totalProjects = 10;
+                const completed = completedProjects.length;
+                const percentage = (completed / totalProjects) * 100;
+                
+                const progressHTML = `
+                    <div class="progress-bar animate-on-load">
+                        <div class="progress-fill" style="width: ${percentage}%;"></div>
+                    </div>
+                    <p style="text-align: center; margin-bottom: 2rem; color: #667eea; font-weight: bold;">
+                        学习进度：${completed}/${totalProjects} 项目已完成
+                    </p>
+                `;
+                
+                pathSection.insertAdjacentHTML('afterbegin', progressHTML);
+            }
+        }
     </script>
 </body>
 </html>
